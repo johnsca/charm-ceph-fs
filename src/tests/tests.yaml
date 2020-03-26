@@ -9,6 +9,7 @@ gate_bundles:
   # https://bugs.launchpad.net/charm-nova-compute/+bug/1862624
   - xenial-ocata
   - xenial-mitaka
+  - k8s: bionic-train-k8s
 smoke_bundles:
   - bionic-stein
 dev_bundles:
@@ -19,5 +20,27 @@ configure:
   - zaza.openstack.charm_tests.nova.setup.create_flavors
   - zaza.openstack.charm_tests.nova.setup.manage_ssh_key
   - zaza.openstack.charm_tests.keystone.setup.add_demo_user
+  - k8s: []
 tests:
   - zaza.openstack.charm_tests.ceph.fs.tests.CephFSTests
+  - k8s:
+    - zaza.openstack.charm_tests.ceph.tests.CephFSK8sTest
+target_deploy_status:
+  easyrsa:
+    workload-status: active
+    workload-status-message: "Certificate Authority connected."
+  etcd:
+    workload-status: active
+    workload-status-message: "Healthy"
+  kubernetes-master:
+    workload-status: active
+    workload-status-message: "Kubernetes master running."
+  kubernetes-worker:
+    workload-status: active
+    workload-status-message: "Kubernetes worker running."
+  containerd:
+    workload-status: active
+    workload-status-message: "Container runtime available"
+  flannel:
+    workload-status: active
+    workload-status-message: "Flannel subnet"
